@@ -1,0 +1,27 @@
+<center>
+	<h1>Here is your all project</h1>
+
+      <%= link_to "Create Project", new_project_path, class: 'btn btn-success' %>
+	    <table class="table table-bordered ">
+	    	 <thead>
+	    	 	<tr>
+	    	 	  <th>Project Name</th>
+	    	 	  <th>show</th>
+	    	 	  <th>Edit</th>
+	    	 	  <th>Delete</th>
+	    	 	</tr>  
+	    	 </thead>
+
+					<% @project.each do |p| %>
+				     <tbody>	
+					         <tr><td><%= p.name %></td>
+                                 <td><%= link_to "Show", p, class: 'btn btn-success' %></td>
+                                 <td><%= link_to "Edit", edit_project_path(p),class: 'btn btn-info' %> </td>
+                                 <td>					 <%= link_to "delete", p, method: :delete,data: { confirm: "You sure?" },class: 'btn btn-danger' %></td>
+					         </tr>
+
+					 </tbody>        
+					<% end %>
+			
+		</table>	
+</center>

@@ -1,0 +1,13 @@
+
+<center>
+<%= form_for @project, url: {action: 'create'} do |f| %>
+   <%= f.label "Project_name" %>
+    <%= f.text_field :name, autocomplete: 'off' %><br>
+       <%= f.fields_for :users_project do |ff| %>
+            <%= f.label :Add_User %> 
+            <%= ff.collection_select(:id, @user, :id, :name, include_blank: true,:multiple => true) %> 
+       <% end %>
+
+    <%= f.submit %>
+ <% end %>
+</cent:users
