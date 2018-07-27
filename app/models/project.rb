@@ -4,8 +4,5 @@ class Project < ApplicationRecord
 	has_many :bugs
      
 	accepts_nested_attributes_for :user_projects
-	accepts_nested_attributes_for :users
-
-    validates :name, :presence => true
-
+    scope :project_sort, -> {where('id >=?',1)}
 end

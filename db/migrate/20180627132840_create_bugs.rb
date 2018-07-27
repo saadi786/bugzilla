@@ -7,6 +7,9 @@ class CreateBugs < ActiveRecord::Migration[5.2]
       t.string :bug_type
       t.string :status
       t.references :project, foreign_key: true
+      t.references :creater
+      t.references :developer
+      
 
       t.timestamps
     end

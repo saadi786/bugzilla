@@ -1,10 +1,84 @@
- 
- 
- <h1>Project</h1>
- <%= @project.name %>
-  <h3>Users</h3>
-   <% @user.each do |f| %>
-         <%= f.user.name %><br>
-   <% end %>
+<script>
+//   $('#assign').click(function(e) {
+//   var bug_id = $(this).val();
+//   console.log(bug_id)
+
+
+// // ajax call to populate div with :description and :price
+
+
+// $.ajax({url: '/events/' + bug_id,
+//       type: 'GET',
+//       success: function(data) {
+//         $('#event-options').empty().append(data);
+//         }
+//      });
+//  });
+</script> 
+
+
+<div class="container"> 
+    <h1>Project Name</h1>
+    <%=  @project.name %>	
+    <h1>Users</h1>
+    <table class="table">
+      <thead class="thead-dark">
+      	<tr>
+  		    <th>User Name</th>	
+  		    <th>User Email</th>	
+          <% if policy(@project).edit? %>
+           <th>Delete User</th> 
+          <% end %> 
+      	</tr>
+      </thead>
+      		
+      <% @user.each do |users| %>
+         <tbody>
+           <tr>
+           	<td><%= users.user.name %></td>
+           	<td><%= users.user.email %></td>
+           </tr>
+         </tbody>    
+      <% end %>
+      </table> 
+      <h1>Bugs</h1>
+      <% if current_user.user_type=='qa' %>
+        <%= link_to "Add bug", new_project_bug_path(@project), class: 'btn btn-success' %>
+      <% end %>
+      <table class="table">
+      	<thead class="thead-dark">
+      		<tr>
+    		    <th>Title</th>	
+    		    <th>Deadline</th>	
+    		    <th>Screenshot</th>	
+    		    <th>Bug Type</th>	
+    		    <th>Status</th>	
+            <th>Assign Bug</th>
+          </tr>
+      	</thead>
+      	<% @bug.each do |b| %>
+          <tbody>
+             <tr>
+               	<td><%= b.title %></td>
+               	<td><%= b.deadline %></td>
+               	<td><%= image_tag b.screenshot_url , class:'img img-responsive' , style:'height:50px;width:100px'  %></td>
+               	<td><%= b.bug_type %></td>
+               	<td><%= b.status %></td>
+                <% if (b.developer_id== nil) %>
+                   <% if current_user.user_type== 'developer' %>
+             	       <td><%= link_to "Assign bug", assign_project_path(b), class: 'btn btn-success',id:'assign' %></td>
+                   <% end %>
+                <% elsif (b.developer_id != nil) && (b.status== 'started') %>
+                     <td><%= link_to "Mark", mark_project_path(b), class: 'btn btn-success' ,id:'assign' %></td>
+                <% else %>
+                  <td class='btn btn-success'> Completed</td>
+                <% end %>
+              </tr>
+          </tbody>    
+        <% end %>
+      </table>
+</div>
+
+
     
   

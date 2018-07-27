@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_28_150142) do
+ActiveRecord::Schema.define(version: 2018_07_17_080922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,19 +22,28 @@ ActiveRecord::Schema.define(version: 2018_06_28_150142) do
     t.string "bug_type"
     t.string "status"
     t.bigint "project_id"
+    t.bigint "creater_id"
+    t.bigint "developer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "creater_id"
-    t.integer "developer_id"
-    t.bigint "user_id"
+    t.index ["creater_id"], name: "index_bugs_on_creater_id"
+    t.index ["developer_id"], name: "index_bugs_on_developer_id"
     t.index ["project_id"], name: "index_bugs_on_project_id"
-    t.index ["user_id"], name: "index_bugs_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_projects", force: :cascade do |t|
+    t.bigint "project_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_user_projects_on_project_id"
+    t.index ["user_id"], name: "index_user_projects_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,17 +65,7 @@ ActiveRecord::Schema.define(version: 2018_06_28_150142) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "users_projects", force: :cascade do |t|
-    t.bigint "project_id"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_users_projects_on_project_id"
-    t.index ["user_id"], name: "index_users_projects_on_user_id"
-  end
-
   add_foreign_key "bugs", "projects"
-  add_foreign_key "bugs", "users"
-  add_foreign_key "users_projects", "projects"
-  add_foreign_key "users_projects", "users"
+  add_foreign_key "user_projects", "projects"
+  add_foreign_key "user_projects", "users"
 end
